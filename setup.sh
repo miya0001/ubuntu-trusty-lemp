@@ -4,8 +4,12 @@ set -ex
 
 sudo apt-get update -y
 
-sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password password ""'
-sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password ""'
+if [ -n "$PASSWORD" ]; then
+  PASSWORD="root"
+fi
+
+sudo debconf-set-selections <<< "mysql-server mysql-server/root_password password $PASSWORD"
+sudo debconf-set-selections <<< "mysql-server mysql-server/root_password_again password $PASSWORD"
 sudo apt-get install git mysql-server curl -y
 
 sudo sh -c 'echo "deb http://nginx.org/packages/mainline/ubuntu/ trusty nginx" > /etc/apt/sources.list.d/nginx-mainline-trusty.list'
