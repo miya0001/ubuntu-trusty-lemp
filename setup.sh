@@ -24,6 +24,11 @@ if [[ ! -e ~/.ssh/known_hosts ]]; then
   chmod 600 ~/.ssh/known_hosts
 fi
 
+git clone https://github.com/letsencrypt/letsencrypt
+sudo mv letsencrypt/letsencrypt-auto /usr/local/bin/
+rm -fr letsencrypt
+sudo /usr/local/bin/letsencrypt-auto
+
 sudo apt-get upgrade -y
 sudo apt-get autoremove -y
 sudo apt-get clean
