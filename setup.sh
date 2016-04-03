@@ -4,13 +4,14 @@ set -ex
 
 sudo apt-get update -y
 
-if [ -n "$PASSWORD" ]; then
-  PASSWORD="root"
-fi
+sudo debconf-set-selections <<< "mysql-server mysql-server/root_password password root"
+sudo debconf-set-selections <<< "mysql-server mysql-server/root_password_again password root"
+sudo apt-get install nodejs npm libcap2-bin git mysql-server curl php5-fpm php5-cli php5-curl php5-gd -y
 
-sudo debconf-set-selections <<< "mysql-server mysql-server/root_password password $PASSWORD"
-sudo debconf-set-selections <<< "mysql-server mysql-server/root_password_again password $PASSWORD"
-sudo apt-get install git mysql-server curl -y
+sudo npm install n -g
+sudo n latest
+sudo ln -sf /usr/local/bin/node /usr/bin/node
+sudo apt-get remove nodejs npm -y
 
 sudo sh -c 'echo "deb http://nginx.org/packages/mainline/ubuntu/ trusty nginx" > /etc/apt/sources.list.d/nginx-mainline-trusty.list'
 
