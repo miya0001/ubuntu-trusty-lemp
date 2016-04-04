@@ -77,7 +77,7 @@ http {
 }
 EOS"
 
-sudo sh -c "cat << EOS > /etc/nginx/conf.d/default.conf
+sudo sh -c 'cat << EOS > /etc/nginx/conf.d/default.conf
 proxy_cache_path  /var/cache/nginx/default levels=1:2 keys_zone=default:4m max_size=50m inactive=30d;
 
 server {
@@ -86,16 +86,16 @@ server {
   client_max_body_size 10M;
 
   location / {
-    proxy_set_header Host \\$host;
-    proxy_set_header Remote-Addr \\$remote_addr;
+    proxy_set_header Host \$host;
+    proxy_set_header Remote-Addr \$remote_addr;
     proxy_cache default;
-    proxy_cache_key "\\$scheme://\\$host\\$request_uri";
+    proxy_cache_key "\$scheme://\$host\$request_uri";
     proxy_cache_valid  200 301 302 303 304 1d;
     proxy_cache_valid any 1m;
     proxy_pass http://localhost:8080;
   }
 }
-EOS"
+EOS'
 
 # wp-cli
 curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
