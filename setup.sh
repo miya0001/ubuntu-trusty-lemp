@@ -31,6 +31,17 @@ if [[ ! -d ~/letsencrypt ]]; then
   git clone https://github.com/letsencrypt/letsencrypt
 fi
 
+# ssh
+sudo sh -c "sed -i -e 's/^PermitRootLogin without-password/PermitRootLogin no/' /etc/ssh/sshd_config"
+sudo sh -c "sed -i -e 's/^#PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config"
+
+# firewall
+sudo ufw default deny
+sudo ufw allow http
+sudo ufw allow https
+sudo ufw allow ssh
+yes | sudo ufw enable
+
 # apache2
 sudo sh -c "sed -i -e 's/www-data/$(whoami)/' /etc/apache2/envvars"
 sudo sh -c "echo 'Listen 8080' > /etc/apache2/ports.conf"
@@ -114,3 +125,5 @@ sudo apt-get clean
 sudo service apache2 restart
 sudo service nginx restart
 sudo service mysql restart
+
+sudo service ssh reload
