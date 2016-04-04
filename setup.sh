@@ -49,6 +49,58 @@ upload_max_filesize=20M
 post_max_size=20M
 EOS"
 
+# nginx
+sudo sh -c 'cat << EOS > /etc/nginx/nginx.conf
+user  $(whoami) $(whoami);
+worker_processes  2;
+worker_rlimit_nofile 10240;
+
+error_log  /var/log/nginx/error.log warn;
+pid        /var/run/nginx.pid;
+
+events {
+  worker_connections  8192;
+  multi_accept on;
+  use epoll;
+}
+
+http {
+  include       /etc/nginx/mime.types;
+  default_type  application/octet-stream;
+  access_log  off;
+  sendfile        on;
+  tcp_nopush      on;
+  keepalive_timeout  10;
+  gzip  on;
+  include /etc/nginx/conf.d/*.conf;
+}
+EOS'
+
+sudo sh -c 'cat << EOS > /etc/nginx/conf.d/default.conf
+proxy_cache_path  /var/cache/nginx/default levels=1:2 keys_zone=default:4m max_size=50m inactive=30d;
+
+server {
+  listen 80 default_server;
+  server_name _;
+  client_max_body_size 10M;
+
+  location / {
+    proxy_set_header Host \$host;
+    proxy_set_header Remote-Addr \$remote_addr;
+    proxy_cache default;
+    proxy_cache_key "$scheme://$host$request_uri";
+    proxy_cache_valid  200 301 302 303 304 0;
+    proxy_cache_valid any 0;
+    proxy_pass http://localhost:8080;
+  }
+}
+EOS'
+
+# wp-cli
+curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+chmod +x wp-cli.phar
+sudo mv wp-cli.phar /usr/local/bin/wp
+
 sudo apt-get upgrade -y
 sudo apt-get autoremove -y
 sudo apt-get clean
