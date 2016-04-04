@@ -40,6 +40,7 @@ sudo sh -c "sed -i -e 's/^ServerSignature On/ServerSignature Off/' /etc/apache2/
 sudo sh -c "sed -i -e 's/Options Indexes/Options/' /etc/apache2/apache2.conf"
 sudo sh -c "sed -i -e 's/<VirtualHost \*:80>/<VirtualHost *:8080>/' /etc/apache2/sites-available/000-default.conf"
 sudo sh -c "echo '' > /var/www/html/index.html"
+sudo sh -c "echo '<?php phpinfo(); ?>' > /var/www/html/phpinfo.php"
 sudo sh -c "echo 'ServerName localhost:8080' > /etc/apache2/conf-available/servername.conf"
 sudo a2enconf servername
 
@@ -89,8 +90,8 @@ server {
     proxy_set_header Remote-Addr \$remote_addr;
     proxy_cache default;
     proxy_cache_key "$scheme://$host$request_uri";
-    proxy_cache_valid  200 301 302 303 304 0;
-    proxy_cache_valid any 0;
+    proxy_cache_valid  200 301 302 303 304 1d;
+    proxy_cache_valid any 1m;
     proxy_pass http://localhost:8080;
   }
 }
@@ -100,6 +101,11 @@ EOS'
 curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
 chmod +x wp-cli.phar
 sudo mv wp-cli.phar /usr/local/bin/wp
+
+# change owner
+sudo chown -R $(whoami):$(whoami) /var/www
+sudo chown -R $(whoami):$(whoami) /var/cache/nginx
+sudo chown -R $(whoami):$(whoami) /var/lib/php5
 
 sudo apt-get upgrade -y
 sudo apt-get autoremove -y
