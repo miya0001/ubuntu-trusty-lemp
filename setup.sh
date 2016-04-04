@@ -20,10 +20,6 @@ curl http://nginx.org/packages/keys/nginx_signing.key | sudo apt-key add -
 sudo apt-get update
 sudo apt-get install nginx
 
-sudo service apache2 stop
-sudo service nginx stop
-sudo service mysql stop
-
 # Installs GitHub's key
 if [[ ! -e ~/.ssh/known_hosts ]]; then
   ssh-keyscan -H github.com >> ~/.ssh/known_hosts
@@ -55,7 +51,7 @@ post_max_size=20M
 EOS"
 
 # nginx
-sudo sh -c 'cat << EOS > /etc/nginx/nginx.conf
+sudo sh -c "cat << EOS > /etc/nginx/nginx.conf
 user  $(whoami) $(whoami);
 worker_processes  2;
 worker_rlimit_nofile 10240;
@@ -79,9 +75,9 @@ http {
   gzip  on;
   include /etc/nginx/conf.d/*.conf;
 }
-EOS'
+EOS"
 
-sudo sh -c 'cat << EOS > /etc/nginx/conf.d/default.conf
+sudo sh -c "cat << EOS > /etc/nginx/conf.d/default.conf
 proxy_cache_path  /var/cache/nginx/default levels=1:2 keys_zone=default:4m max_size=50m inactive=30d;
 
 server {
@@ -90,16 +86,16 @@ server {
   client_max_body_size 10M;
 
   location / {
-    proxy_set_header Host \$host;
-    proxy_set_header Remote-Addr \$remote_addr;
+    proxy_set_header Host \\$host;
+    proxy_set_header Remote-Addr \\$remote_addr;
     proxy_cache default;
-    proxy_cache_key "$scheme://$host$request_uri";
+    proxy_cache_key "\\$scheme://\\$host\\$request_uri";
     proxy_cache_valid  200 301 302 303 304 1d;
     proxy_cache_valid any 1m;
     proxy_pass http://localhost:8080;
   }
 }
-EOS'
+EOS"
 
 # wp-cli
 curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
@@ -118,12 +114,3 @@ sudo apt-get clean
 sudo service apache2 restart
 sudo service nginx restart
 sudo service mysql restart
-
-# change owner
-sudo chown -R $(whoami):$(whoami) /var/www
-sudo chown -R $(whoami):$(whoami) /var/cache/nginx
-sudo chown -R $(whoami):$(whoami) /var/lib/php5
-
-sudo service apache2 start
-sudo service nginx start
-sudo service mysql start
