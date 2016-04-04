@@ -20,6 +20,10 @@ curl http://nginx.org/packages/keys/nginx_signing.key | sudo apt-key add -
 sudo apt-get update
 sudo apt-get install nginx
 
+sudo service apache2 stop
+sudo service nginx stop
+sudo service mysql stop
+
 # Installs GitHub's key
 if [[ ! -e ~/.ssh/known_hosts ]]; then
   ssh-keyscan -H github.com >> ~/.ssh/known_hosts
@@ -114,3 +118,12 @@ sudo apt-get clean
 sudo service apache2 restart
 sudo service nginx restart
 sudo service mysql restart
+
+# change owner
+sudo chown -R $(whoami):$(whoami) /var/www
+sudo chown -R $(whoami):$(whoami) /var/cache/nginx
+sudo chown -R $(whoami):$(whoami) /var/lib/php5
+
+sudo service apache2 start
+sudo service nginx start
+sudo service mysql start
