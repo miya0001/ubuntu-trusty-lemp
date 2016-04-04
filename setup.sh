@@ -35,13 +35,6 @@ fi
 sudo sh -c "sed -i -e 's/^PermitRootLogin without-password/PermitRootLogin no/' /etc/ssh/sshd_config"
 sudo sh -c "sed -i -e 's/^#PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config"
 
-# firewall
-sudo ufw default deny
-sudo ufw allow http
-sudo ufw allow https
-sudo ufw allow ssh
-yes | sudo ufw enable
-
 # apache2
 sudo sh -c "sed -i -e 's/www-data/$(whoami)/' /etc/apache2/envvars"
 sudo sh -c "echo 'Listen 8080' > /etc/apache2/ports.conf"
