@@ -8,7 +8,6 @@ packages = %w(
   nginx
   mysql-server
   php7.0
-  ruby
 );
 
 packages.each do |package|
