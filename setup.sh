@@ -6,7 +6,7 @@ sudo apt-get update -y
 
 sudo debconf-set-selections <<< "mysql-server mysql-server/root_password password root"
 sudo debconf-set-selections <<< "mysql-server mysql-server/root_password_again password root"
-sudo apt-get install nodejs npm libcap2-bin git mysql-server curl apache2 libapache2-mod-php5 php5-cli php5-curl php5-gd jq -y
+sudo apt-get install nodejs npm libcap2-bin git mysql-server curl apache2 jq -y
 
 # Installs Node latest
 sudo npm install n -g
@@ -18,7 +18,7 @@ sudo apt-get remove nodejs npm -y
 sudo sh -c 'echo "deb http://nginx.org/packages/mainline/ubuntu/ trusty nginx" > /etc/apt/sources.list.d/nginx-mainline-trusty.list'
 curl http://nginx.org/packages/keys/nginx_signing.key | sudo apt-key add -
 sudo apt-get update
-sudo apt-get install nginx
+sudo apt-get install nginx -y
 
 # Installs ruby
 sudo apt-get install software-properties-common -y
@@ -27,6 +27,12 @@ sudo apt-get update -y
 sudo apt-get install ruby2.3 -y
 sudo apt-get install ruby-switch -y
 sudo ruby-switch --set ruby2.3
+
+# Installs php7
+sudo apt-get install -y language-pack-en-base -y
+sudo LC_ALL=en_US.UTF-8 add-apt-repository ppa:ondrej/php -y
+sudo apt-get update
+sudo apt-get install php7.0 libapache2-mod-php7.0 php7.0-mysql php7.0-curl php7.0-gd php7.0-json php7.0-mbstring php7.0-xml php7.0-zip  -y
 
 # Installs GitHub's key
 if [[ ! -e ~/.ssh/known_hosts ]]; then
@@ -64,7 +70,7 @@ post_max_size=20M
 EOS"
 
 # nginx
-sudo openssl dhparam 2048 -out /etc/nginx/ssl/dhparam.pem
+sudo openssl dhparam 2048 -out /etc/ssl/private/dhparam.pem
 
 sudo sh -c "cat << EOS > /etc/nginx/nginx.conf
 user  $(whoami) $(whoami);

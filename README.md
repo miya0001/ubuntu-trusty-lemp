@@ -3,6 +3,7 @@
 * Apache2
 * Nginx Mainline release
 * MySQL (Default package)
+* PHP7
 * Let's Encrypt & SNI & HTTP/2
 
 ## Getting Started
@@ -11,7 +12,7 @@
 $ git clone git@github.com:miya0001/ubuntu-trusty-lemp.git
 ```
 
-### Setup LEMP
+### Installs Apache2 + Nginx + MySQL + PHP5
 
 ```
 $ bash ./setup.sh
