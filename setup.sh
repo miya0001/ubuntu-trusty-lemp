@@ -27,6 +27,7 @@ sudo apt-get update -y
 sudo apt-get install ruby2.3 -y
 sudo apt-get install ruby-switch -y
 sudo ruby-switch --set ruby2.3
+sudo gem install bundle
 
 # Installs php7
 sudo apt-get install -y language-pack-en-base -y
