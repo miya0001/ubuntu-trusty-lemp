@@ -64,7 +64,7 @@ sudo a2enconf servername
 sudo a2dismod ssl
 
 # php
-sudo sh -c "cat <<EOS > /etc/php5/apache2/conf.d/20-upload.ini
+sudo sh -c "cat <<EOS > /etc/php/7.0/apache2/conf.d/20-upload.ini
 upload_max_filesize=20M
 post_max_size=20M
 EOS"
