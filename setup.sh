@@ -47,6 +47,7 @@ sudo sh -c "echo '' > /var/www/html/index.html"
 sudo sh -c "echo '<?php phpinfo(); ?>' > /var/www/html/phpinfo.php"
 sudo sh -c "echo 'ServerName localhost:8080' > /etc/apache2/conf-available/servername.conf"
 sudo a2enconf servername
+sudo a2dismod ssl
 
 # php
 sudo sh -c "cat <<EOS > /etc/php5/apache2/conf.d/20-upload.ini
@@ -55,6 +56,8 @@ post_max_size=20M
 EOS"
 
 # nginx
+sudo openssl dhparam 2048 -out /etc/nginx/ssl/dhparam.pem
+
 sudo sh -c "cat << EOS > /etc/nginx/nginx.conf
 user  $(whoami) $(whoami);
 worker_processes  2;
@@ -85,7 +88,13 @@ sudo sh -c 'cat << EOS > /etc/nginx/conf.d/default.conf
 proxy_cache_path  /var/cache/nginx/default levels=1:2 keys_zone=default:4m max_size=50m inactive=30d;
 
 server {
-  listen 80 default_server;
+    listen 80;
+    server_name encrypt.example.com;
+    rewrite ^ https://$server_name$request_uri? permanent;
+}
+
+server {
+  listen 443 default_server;
   server_name _;
   client_max_body_size 10M;
 
