@@ -50,18 +50,31 @@ end
 #
 # Tests of some commands
 #
+describe command('/usr/sbin/nginx -V') do
+  its(:stderr) { should contain('TLS SNI support enabled') }
+  its(:stderr) { should contain('http_v2_module') }
+end
+
 describe command('php -v') do
-  its(:stdout) { should match /PHP 7\.0/ }
+  its(:stdout) { should contain('PHP 7.0') }
 end
 
 describe command('ruby -v') do
-  its(:stdout) { should match /ruby 2\.3/ }
+  its(:stdout) { should contain('ruby 2.3') }
 end
 
 describe command('node -v') do
-  its(:stdout) { should match /v5\.10/ }
+  its(:stdout) { should contain('v5.10') }
 end
 
 describe command('wp --info') do
   its(:exit_status) { should eq 0 }
+end
+
+describe command('wp --info') do
+  its(:exit_status) { should eq 0 }
+end
+
+describe file(File.join(ENV["HOME"], '/letsencrypt/letsencrypt-auto')) do
+  it { should be_executable }
 end
