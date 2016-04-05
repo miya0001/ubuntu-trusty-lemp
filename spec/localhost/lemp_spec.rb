@@ -74,6 +74,10 @@ describe command('wp --info') do
   its(:exit_status) { should eq 0 }
 end
 
+describe command('composer help') do
+  its(:exit_status) { should eq 0 }
+end
+
 describe file(File.join(ENV["HOME"], '/letsencrypt/letsencrypt-auto')) do
   it { should be_executable }
 end
