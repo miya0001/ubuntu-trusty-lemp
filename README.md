@@ -16,7 +16,7 @@
 Clone this repository on the new machine.
 
 ```
-$ git clone git@github.com:miya0001/ubuntu-trusty-lemp.git
+$ git clone https://github.com/miya0001/ubuntu-trusty-lemp.git
 ```
 
 ### Installs Apache2 + Nginx + MySQL + PHP5
