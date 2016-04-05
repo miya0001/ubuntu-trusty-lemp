@@ -111,8 +111,8 @@ server {
     proxy_set_header Remote-Addr \$remote_addr;
     proxy_cache default;
     proxy_cache_key "\$scheme://\$host\$request_uri";
-    proxy_cache_valid  200 301 302 303 304 1d;
-    proxy_cache_valid any 1m;
+    proxy_cache_valid  200 301 302 303 304 0;
+    proxy_cache_valid any 0;
     proxy_pass http://localhost:8080;
   }
 }
