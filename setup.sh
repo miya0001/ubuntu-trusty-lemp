@@ -88,13 +88,7 @@ sudo sh -c 'cat << EOS > /etc/nginx/conf.d/default.conf
 proxy_cache_path  /var/cache/nginx/default levels=1:2 keys_zone=default:4m max_size=50m inactive=30d;
 
 server {
-    listen 80;
-    server_name encrypt.example.com;
-    rewrite ^ https://$server_name$request_uri? permanent;
-}
-
-server {
-  listen 443 default_server;
+  listen 80 default_server;
   server_name _;
   client_max_body_size 10M;
 
