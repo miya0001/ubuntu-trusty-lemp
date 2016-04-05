@@ -42,7 +42,10 @@ $ vagrant up
 
 ### Automated testing
 
+SSH into your machine then run following.
+
 ```
+$ cd /vagrant
 $ bundle install --path vendor/bundle
 $ bundle exec rake spec
 ```
