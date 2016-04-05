@@ -20,6 +20,14 @@ curl http://nginx.org/packages/keys/nginx_signing.key | sudo apt-key add -
 sudo apt-get update
 sudo apt-get install nginx
 
+# Installs ruby
+sudo apt-get install software-properties-common -y
+sudo apt-add-repository ppa:brightbox/ruby-ng -y
+sudo apt-get update -y
+sudo apt-get install ruby2.3 -y
+sudo apt-get install ruby-switch -y
+sudo ruby-switch --set ruby2.3
+
 # Installs GitHub's key
 if [[ ! -e ~/.ssh/known_hosts ]]; then
   ssh-keyscan -H github.com >> ~/.ssh/known_hosts
