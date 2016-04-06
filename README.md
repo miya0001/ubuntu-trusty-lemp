@@ -1,11 +1,11 @@
 # LEMP on Ubuntu Trusty
 
 * Apache2
-* Nginx Mainline release
+* Nginx Mainline release (SNI & HTTP/2)
 * MySQL (Default package)
 * PHP7
 * WP-CLI
-* Let's Encrypt & SNI & HTTP/2
+* Let's Encrypt
 
 ## Requires
 
@@ -19,7 +19,7 @@ Clone this repository on the new machine.
 $ git clone https://github.com/miya0001/ubuntu-trusty-lemp.git
 ```
 
-### Installs Apache2 + Nginx + MySQL + PHP5
+### Install
 
 ```
 $ cd ubuntu-trusty-lemp
