@@ -130,6 +130,7 @@ EOS'
 curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
 chmod +x wp-cli.phar
 sudo mv wp-cli.phar /usr/local/bin/wp
+/usr/local/bin/wp package install miya0001/wp-cli-vhosts:@stable
 
 # change owner
 sudo chown -R $(whoami):$(whoami) /var/www
