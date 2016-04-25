@@ -63,7 +63,7 @@ describe command('ruby -v') do
 end
 
 describe command('node -v') do
-  its(:stdout) { should contain('v5.10') }
+  its(:stdout) { should contain('v5') }
 end
 
 describe command('wp --info') do
